@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tauri App</title>
+    <script type="module" src="/main.js" defer></script>
+    <style>
+      .logo.vanilla:hover {
+        filter: drop-shadow(0 0 2em #ffe21c);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Welcome to Chat-Client!</h1>
+
+      <div class="row">
+        <a href="https://github.com/d1msk1y" target="_blank">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" class="logo tauri" alt="Tauri logo" />
+        </a>
+      </div>
+
+      <p>Click on the GitHub logo to learn more about the developer</p>
+
+      <div class="row">
+        <div>
+          <input id="greet-input" placeholder="Enter a name..." />
+          <button id="greet-button" type="button">Greet</button>
+        </div>
+      </div>
+
+      <p id="greet-msg"></p>
+    </div>
+  </body>
+</html>
