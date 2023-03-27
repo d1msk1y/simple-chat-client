@@ -8,49 +8,27 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use tauri::CursorIcon::Text;
 
-async fn get_request(command: &str) -> Result<String, Error>{
-    let url = "http://localhost:8080".to_owned() + &command;
-    let response = reqwest::get("")
+async fn get_request(endpoint: &str) -> Result<String, Error>{
+    let url = "http://localhost:8080".to_owned() + &endpoint;
+    let response = reqwest::get(&url)
         .await?
         .text()
         .await?;
-    // println!("{}", response);
+    println!("{}", &url);
     Ok(format!("{}", response))
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-struct Message {
-    id: String,
-    username: String,
-    time: String,
-    message: String,
-}
-
 #[tauri::command]
-async fn get_messages() -> Result<Message, Message>
+async fn get_message_by_id(id: &str) -> Result<String, String>
 {
-    get_message_by_id().await
-}
-
-async fn get_message_by_id() -> Result<Message, Message>
-{
-    let input = r#"{
-    "id": "1",
-    "username": "d1msk1y 2",
-    "time": "00:01",
-    "message": "Hellow d1msk1y!"
-    }"#;
-
-    let message: Message = serde_json::from_str(input).unwrap();
-
-    println!("{}", message.message);
-    Ok(message)
+    let url = "/messages/".to_owned() + id;
+    get_request(url.as_str()).await.map_err(|e| e.to_string())
 }
 
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
-            get_messages
+            get_message_by_id
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
