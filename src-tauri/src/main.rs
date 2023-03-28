@@ -4,7 +4,7 @@ use std::fmt::format;
 use std::io::Read;
 use std::net::ToSocketAddrs;
 use reqwest::Error;
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, ser, Serialize};
 use serde_json::Value;
 use tauri::CursorIcon::Text;
 
@@ -20,19 +20,23 @@ async fn get_request(endpoint: &str) -> Result<String, Error>{
     Ok(format!("{}", response))
 }
 
-async fn post_request(endpoint: &str) -> Result<(), Error>{
+#[derive(Serialize, Deserialize, Debug)]
+struct Message{
+    id: String,
+    username: String,
+    time: String,
+    message: String
+}
+
+async fn post_request(endpoint: &str, json: &str) -> Result<(), Error>{
     let client = reqwest::Client::new();
-    let input = r#"{
-    "id": "4",
-    "username": "d1msk1y 2",
-    "time": "00:01",
-    "message": "Hellow d1msk1y!"
-    }"#;
+
+    let s = json.to_string();
 
     let response = client
         .post(SERVER_ADDRESS.to_owned() + endpoint)
         .header("Content-Type", "application/json")
-        .body(input)
+        .body(s)
         .send()
         .await?;
 
@@ -61,7 +65,16 @@ async fn get_last_message() -> Result<String, String> {
 #[tauri::command]
 async fn send_message(message:&str) -> Result<(), String> {
     let endpoint = "/messages";
-    post_request(endpoint).await.map_err(|e|e.to_string())
+
+    let m = Message{
+        id: "4".to_string(),
+        username: "d1msk1y 1".to_string(),
+        time: "0000".to_string(),
+        message: message.to_string()
+    };
+
+    let input = serde_json::to_string(&m).unwrap();
+    post_request(endpoint, input.as_str()).await.map_err(|e|e.to_string())
 }
 
 fn main() {
