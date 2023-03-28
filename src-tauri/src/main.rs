@@ -4,18 +4,43 @@ use std::fmt::format;
 use std::io::Read;
 use std::net::ToSocketAddrs;
 use reqwest::Error;
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, ser, Serialize};
 use serde_json::Value;
 use tauri::CursorIcon::Text;
 
+static SERVER_ADDRESS: &str = "http://localhost:8080";
+
 async fn get_request(endpoint: &str) -> Result<String, Error>{
-    let url = "http://localhost:8080".to_owned() + &endpoint;
+    let url = SERVER_ADDRESS.to_owned() + &endpoint;
     let response = reqwest::get(&url)
         .await?
         .text()
         .await?;
     println!("{}", &url);
     Ok(format!("{}", response))
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct Message{
+    id: String,
+    username: String,
+    time: String,
+    message: String
+}
+
+async fn post_request(endpoint: &str, json: &str) -> Result<(), Error>{
+    let client = reqwest::Client::new();
+
+    let s = json.to_string();
+
+    let response = client
+        .post(SERVER_ADDRESS.to_owned() + endpoint)
+        .header("Content-Type", "application/json")
+        .body(s)
+        .send()
+        .await?;
+
+    Ok(())
 }
 
 #[tauri::command]
@@ -37,12 +62,33 @@ async fn get_last_message() -> Result<String, String> {
     get_request(endpoint).await.map_err(|e|e.to_string())
 }
 
+#[tauri::command]
+async fn send_message(message:&str) -> Result<(), String> {
+    let last_message_json = get_last_message().await?;
+    let last_message: Message = serde_json::from_str(last_message_json.as_str()).unwrap();
+
+    println!("Last message index was: {}",last_message.id);
+
+    let id: i32 = last_message.id.parse().unwrap();
+    let m = Message{
+        id: (id + 1).to_string(),
+        username: "d1msk1y 1".to_string(),
+        time: "00:00".to_string(),
+        message: message.to_string()
+    };
+
+    let endpoint = "/messages";
+    let stringified_json = serde_json::to_string(&m).unwrap();
+    post_request(endpoint, stringified_json.as_str()).await.map_err(|e|e.to_string())
+}
+
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             get_message_by_id,
             get_all_messages,
-            get_last_message
+            get_last_message,
+            send_message
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

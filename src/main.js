@@ -1,22 +1,52 @@
 const { invoke } = window.__TAURI__.tauri;
 
 let greetMsgEl;
+let greetInputEl;
 
-async function getMessageById() {
-  greetMsgEl.textContent = await invoke("get_message_by_id", {id: "0"});
+function createMessageGetter(methodName, params = {}) {
+  return async function(){
+    const json = await invoke(methodName, params);
+    greetMsgEl.textContent = json.message;
+    return JSON.parse(json);
+  }
 }
 
-async function getLastMessage() {
-  greetMsgEl.textContent = await invoke("get_last_message");
+function createMessageBox(message, nickname){
+  const timestamp = new Date().toLocaleTimeString();
+  const messageBoxHTML = `
+      <div style="background-color: #f2f2f2; border-radius: 10px; padding: 10px; max-width: 300px;">
+        <p style="font-size: 14px; margin: 0;">${message}</p>
+        <p style="font-size: 12px; margin: 0; color: #8c8c8c;">Sent at ${timestamp}</p>
+      </div>
+    `;
+  return document.createRange().createContextualFragment(messageBoxHTML).firstElementChild;
 }
 
-async function getAllMessages() {
-  greetMsgEl.textContent = await invoke("get_all_messages");
+
+const getMessageById = createMessageGetter("get_message_by_id", {id: "0"});
+const getLastMessage = createMessageGetter("get_last_message");
+const getAllMessages = createMessageGetter("get_all_messages");
+
+async function printLastMessage() {
+  const message = await getLastMessage();
+  const messageBox = createMessageBox(message.message, message.nickname)
+  document.body.appendChild(messageBox);
+}
+
+async function sendMessage(){
+  await invoke("send_message", {message: greetInputEl.value});
 }
 
 window.addEventListener("DOMContentLoaded", () => {
   greetMsgEl = document.querySelector("#greet-msg");
   document
     .querySelector("#greet-button")
-    .addEventListener("click", () => getMessages());
+    .addEventListener("click", () => printLastMessage());
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  greetInputEl = document.querySelector("#greet-input");
+  document
+    .querySelector("#send-message-button")
+    .addEventListener("click", () => sendMessage());
 });
