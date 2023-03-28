@@ -64,17 +64,22 @@ async fn get_last_message() -> Result<String, String> {
 
 #[tauri::command]
 async fn send_message(message:&str) -> Result<(), String> {
-    let endpoint = "/messages";
+    let last_message_json = get_last_message().await?;
+    let last_message: Message = serde_json::from_str(last_message_json.as_str()).unwrap();
 
+    println!("Last message index was: {}",last_message.id);
+
+    let id: i32 = last_message.id.parse().unwrap();
     let m = Message{
-        id: "4".to_string(),
+        id: (id + 1).to_string(),
         username: "d1msk1y 1".to_string(),
-        time: "0000".to_string(),
+        time: "00:00".to_string(),
         message: message.to_string()
     };
 
-    let input = serde_json::to_string(&m).unwrap();
-    post_request(endpoint, input.as_str()).await.map_err(|e|e.to_string())
+    let endpoint = "/messages";
+    let stringified_json = serde_json::to_string(&m).unwrap();
+    post_request(endpoint, stringified_json.as_str()).await.map_err(|e|e.to_string())
 }
 
 fn main() {
