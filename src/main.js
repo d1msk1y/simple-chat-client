@@ -39,6 +39,10 @@ async function sendMessage(){
   await invoke("send_message", {message: greetInputEl.value});
 }
 
+async function handshakeWebsocket(){
+  await invoke("ws_handshake");
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   greetMsgEl = document.querySelector("#greet-msg");
   document
@@ -51,4 +55,10 @@ window.addEventListener("DOMContentLoaded", () => {
   document
     .querySelector("#send-message-button")
     .addEventListener("click", () => sendMessage());
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  document
+    .querySelector("#handshake-button")
+    .addEventListener("click", () => handshakeWebsocket());
 });
