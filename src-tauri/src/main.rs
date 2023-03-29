@@ -10,6 +10,7 @@ use serde_json::Value;
 use tauri::CursorIcon::Text;
 use chrono;
 use tungstenite::{connect, Message};
+use web_sys;
 
 static SERVER_ADDRESS: &str = "http://localhost:8080";
 
@@ -73,8 +74,9 @@ async fn ws_handshake() {
         let message = socket.read_message().expect("Failed to receive message");
         if let Message::Text(json_message) = &message {
 
-            // Handle the message as needed
-            println!("Received message: {:?}", &message);
+            let message: MessageInfo = serde_json::from_str(&json_message).unwrap();
+            let message_formatted = serde_json::to_string_pretty(&message).unwrap();
+            println!("Received message: {}", message_formatted);
         }
     }
 }

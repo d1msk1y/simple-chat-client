@@ -258,6 +258,8 @@ dependencies = [
  "tauri-build",
  "tokio",
  "tungstenite",
+ "wasm-bindgen",
+ "web-sys",
 ]
 
 [[package]]
