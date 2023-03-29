@@ -7,8 +7,17 @@ use reqwest::Error;
 use serde::{Deserialize, ser, Serialize};
 use serde_json::Value;
 use tauri::CursorIcon::Text;
+use chrono;
 
 static SERVER_ADDRESS: &str = "http://localhost:8080";
+
+#[derive(Serialize, Deserialize, Debug)]
+struct Message{
+    id: String,
+    username: String,
+    time: String,
+    message: String
+}
 
 async fn get_request(endpoint: &str) -> Result<String, Error>{
     let url = SERVER_ADDRESS.to_owned() + &endpoint;
@@ -20,23 +29,15 @@ async fn get_request(endpoint: &str) -> Result<String, Error>{
     Ok(format!("{}", response))
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-struct Message{
-    id: String,
-    username: String,
-    time: String,
-    message: String
-}
-
-async fn post_request(endpoint: &str, json: &str) -> Result<(), Error>{
+async fn post_json(endpoint: &str, json: &str) -> Result<(), Error>{
     let client = reqwest::Client::new();
 
-    let s = json.to_string();
+    let json_sting = json.to_string();
 
     let response = client
         .post(SERVER_ADDRESS.to_owned() + endpoint)
         .header("Content-Type", "application/json")
-        .body(s)
+        .body(json_sting)
         .send()
         .await?;
 
@@ -73,13 +74,13 @@ async fn send_message(message:&str) -> Result<(), String> {
     let m = Message{
         id: (id + 1).to_string(),
         username: "d1msk1y 1".to_string(),
-        time: "00:00".to_string(),
+        time: chrono::offset::Local::now().to_string(),
         message: message.to_string()
     };
 
     let endpoint = "/messages";
     let stringified_json = serde_json::to_string(&m).unwrap();
-    post_request(endpoint, stringified_json.as_str()).await.map_err(|e|e.to_string())
+    post_json(endpoint, stringified_json.as_str()).await.map_err(|e|e.to_string())
 }
 
 fn main() {
