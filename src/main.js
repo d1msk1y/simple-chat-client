@@ -3,6 +3,10 @@ const { invoke } = window.__TAURI__.tauri;
 let greetMsgEl;
 let greetInputEl;
 
+const getMessageById = createMessageGetter("get_message_by_id", {id: "0"});
+const getLastMessage = createMessageGetter("get_last_message");
+const getAllMessages = createMessageGetter("get_all_messages");
+
 function createMessageGetter(methodName, params = {}) {
   return async function(){
     const json = await invoke(methodName, params);
@@ -11,30 +15,32 @@ function createMessageGetter(methodName, params = {}) {
   }
 }
 
-function createMessageBox(message, nickname){
-  const timestamp = new Date().toLocaleTimeString();
+function createMessageBox(message){
   const messageBoxHTML = `
-      <div style="background-color: #f2f2f2; border-radius: 10px; padding: 10px; max-width: 300px;">
-        <p style="font-size: 14px; margin: 0;">${message}</p>
-        <p style="font-size: 12px; margin: 0; color: #8c8c8c;">Sent at ${timestamp}</p>
+      <div style="background-color: #e1e1e1; border-radius: 10px; padding: 10px; max-width: 300px;">
+        <p style="font-size: 12px; margin: 0; color: #4b4b4b;">${message.username}</p>
+        <p style="font-size: 14px; margin: 0;">${message.message}</p>
+        <p style="font-size: 12px; margin: 0; color: #7a7a7a;">Sent at ${message.time}</p>
       </div>
     `;
   return document.createRange().createContextualFragment(messageBoxHTML).firstElementChild;
 }
 
-
-const getMessageById = createMessageGetter("get_message_by_id", {id: "0"});
-const getLastMessage = createMessageGetter("get_last_message");
-const getAllMessages = createMessageGetter("get_all_messages");
+async function printMessage(message){
+  let messageBox = createMessageBox(message);
+  document.body.appendChild(messageBox);
+}
 
 async function printLastMessage() {
-  const message = await getLastMessage();
-  const messageBox = createMessageBox(message.message, message.nickname)
-  document.body.appendChild(messageBox);
+  await printMessage(await getLastMessage());
 }
 
 async function sendMessage(){
   await invoke("send_message", {message: greetInputEl.value});
+}
+
+async function handshakeWebsocket(){
+  await invoke("ws_handshake");
 }
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -49,4 +55,10 @@ window.addEventListener("DOMContentLoaded", () => {
   document
     .querySelector("#send-message-button")
     .addEventListener("click", () => sendMessage());
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  document
+    .querySelector("#handshake-button")
+    .addEventListener("click", () => handshakeWebsocket());
 });
