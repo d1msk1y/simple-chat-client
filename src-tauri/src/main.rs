@@ -6,7 +6,7 @@ use std::net::ToSocketAddrs;
 use std::time::Duration;
 use reqwest::{Error, Url};
 use serde::{Deserialize, ser, Serialize};
-use serde_json::Value;
+use serde_json::{json, Value};
 use tauri::CursorIcon::Text;
 use chrono;
 use tungstenite::{connect, Message};
@@ -14,6 +14,7 @@ use web_sys;
 use std::thread;
 use tauri::Error::Runtime;
 use tokio::runtime;
+use tauri::Window;
 
 static SERVER_ADDRESS: &str = "http://localhost:8080";
 

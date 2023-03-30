@@ -28,7 +28,9 @@ function createMessageBox(message){
 
 async function printMessage(message){
   let messageBox = createMessageBox(message);
-  document.body.appendChild(messageBox);
+  document.getElementById("greeting-panel").appendChild(messageBox);
+
+  window.scrollTo(0, document.body.scrollHeight);
 }
 
 async function printLastMessage() {
@@ -37,10 +39,6 @@ async function printLastMessage() {
 
 async function sendMessage(){
   await invoke("send_message", {message: greetInputEl.value});
-}
-
-async function handshakeWebsocket(){
-  await invoke("ws_handshake");
 }
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -55,10 +53,4 @@ window.addEventListener("DOMContentLoaded", () => {
   document
     .querySelector("#send-message-button")
     .addEventListener("click", () => sendMessage());
-});
-
-window.addEventListener("DOMContentLoaded", () => {
-  document
-    .querySelector("#handshake-button")
-    .addEventListener("click", () => handshakeWebsocket());
 });
