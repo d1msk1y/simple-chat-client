@@ -11,6 +11,9 @@ use tauri::CursorIcon::Text;
 use chrono;
 use tungstenite::{connect, Message};
 use web_sys;
+use std::thread;
+use tauri::Error::Runtime;
+use tokio::runtime;
 
 static SERVER_ADDRESS: &str = "http://localhost:8080";
 
@@ -100,8 +103,15 @@ async fn get_last_message() -> Result<String, String> {
     get_request(endpoint).await.map_err(|e|e.to_string())
 }
 
-fn main() {
-    ws_handshake();
+#[tokio::main]
+async fn main() {
+    let rt = tokio::runtime::Runtime::new().unwrap();
+    let handle = thread::spawn(move || {
+        rt.block_on(async {
+            ws_handshake().await;
+        });
+    });
+
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             get_message_by_id,
@@ -112,4 +122,6 @@ fn main() {
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+
+    handle.join().unwrap();
 }
