@@ -3,14 +3,13 @@ const { invoke } = window.__TAURI__.tauri;
 let greetMsgEl;
 let greetInputEl;
 
-const getMessageById = createMessageGetter("get_message_by_id", {id: "0"});
-const getLastMessage = createMessageGetter("get_last_message");
-const getAllMessages = createMessageGetter("get_all_messages");
+const getMessageById = messageGetter("get_message_by_id", {id: "0"});
+const getLastMessage = messageGetter("get_last_message");
+const getAllMessages = messageGetter("get_all_messages");
 
-function createMessageGetter(methodName, params = {}) {
+function messageGetter(methodName, params = {}) {
   return async function(){
     const json = await invoke(methodName, params);
-    greetMsgEl.textContent = json.message;
     return JSON.parse(json);
   }
 }
@@ -41,6 +40,7 @@ async function sendMessage(){
   await invoke("send_message", {message: greetInputEl.value});
 }
 
+
 window.addEventListener("DOMContentLoaded", () => {
   greetMsgEl = document.querySelector("#greet-msg");
   document
@@ -51,6 +51,6 @@ window.addEventListener("DOMContentLoaded", () => {
 window.addEventListener("DOMContentLoaded", () => {
   greetInputEl = document.querySelector("#greet-input");
   document
-    .querySelector("#send-message-button")
-    .addEventListener("click", () => sendMessage());
+      .querySelector("#send-message-button")
+      .addEventListener("click", () => sendMessage());
 });

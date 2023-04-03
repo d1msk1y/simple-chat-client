@@ -26,6 +26,10 @@ struct MessageInfo {
     message: String
 }
 
+struct MessagePage {
+
+}
+
 async fn get_request(endpoint: &str) -> Result<String, Error>{
     let url = SERVER_ADDRESS.to_owned() + &endpoint;
     let response = reqwest::get(&url)
@@ -33,6 +37,7 @@ async fn get_request(endpoint: &str) -> Result<String, Error>{
         .text()
         .await?;
     println!("{}", &url);
+    println!("{}", response);
     Ok(format!("{}", response))
 }
 
@@ -92,6 +97,21 @@ async fn get_message_by_id(id: &str) -> Result<String, String>
     get_request(endpoint.as_str()).await.map_err(|e| e.to_string())
 }
 
+
+#[tauri::command]
+async fn get_message_by_page(id: &str) -> Result<String, String>
+{
+    let endpoint = "/messages/pages/".to_owned() + id;
+    get_request(endpoint.as_str()).await.map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+async fn get_last_message_page() -> Result<String, String>
+{
+    let endpoint = "/messages/pages/last";
+    get_request(endpoint).await.map_err(|e| e.to_string())
+}
+
 #[tauri::command]
 async fn get_all_messages() -> Result<String, String> {
     let endpoint = "/messages";
@@ -119,7 +139,9 @@ async fn main() {
             get_all_messages,
             get_last_message,
             ws_handshake,
-            send_message
+            send_message,
+            get_message_by_page,
+            get_last_message_page
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
