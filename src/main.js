@@ -8,7 +8,7 @@ const getLastMessage = messageGetter("get_last_message");
 const getAllMessages = messageGetter("get_all_messages");
 
 window.onload = async function (){
-  await PrintMessagePage();
+  await PrintMessagePage("1");
 }
 
 function messageGetter(methodName, params = {}) {
@@ -44,8 +44,8 @@ async function sendMessage(){
   await invoke("send_message", {message: greetInputEl.value});
 }
 
-async function PrintMessagePage(){
-  const json = await invoke("get_last_message_page");
+async function PrintMessagePage(id){
+  const json = await invoke("get_message_by_page", {id: id});
   let parse = JSON.parse(json);
   let items = parse.messages.Items;
 
@@ -53,20 +53,6 @@ async function PrintMessagePage(){
     i--;
     await printMessage(items[i]);
   }
-}
-
-function toggleEmojiDrawer() {
-  let drawer = document.getElementById('drawer');
-
-  if (drawer.classList.contains('hidden')) {
-    drawer.classList.remove('hidden');
-  } else {
-    drawer.classList.add('hidden');
-  }
-}
-
-function addEmoji(emoji) {
-  greetInputEl.value += emoji;
 }
 
 window.addEventListener("DOMContentLoaded", () => {

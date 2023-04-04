@@ -27,6 +27,12 @@
 
     </div>
 
+    <script>
+      function addEmoji(emoji) {
+      document.getElementById("greet-input").value += emoji;
+    }
+    </script>
+
     <div class="row">
       <div>
         <input id="greet-input" placeholder="Enter a name..." />
@@ -35,7 +41,7 @@
       </div>
 
       <div id="drawer" class="emoji-drawer">
-        <div class="emoji" onclick="addEmoji(this.textContent)">😊</div>
+        <div class="emoji" onclick="addEmoji(this.innerHTML)">😊</div>
         <div class="emoji" onclick="addEmoji(this.innerHTML)">😂</div>
         <div class="emoji" onclick="addEmoji(this.innerHTML)">😞</div>
       </div>
