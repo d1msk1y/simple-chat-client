@@ -27,14 +27,26 @@
 
     </div>
 
+    <script>
+      function addEmoji(emoji) {
+      document.getElementById("greet-input").value += emoji;
+    }
+    </script>
+
     <div class="row">
       <div>
         <input id="greet-input" placeholder="Enter a name..." />
         <button id="send-message-button" type="button">Send</button>
         <button id="greet-button" type="button">Refresh</button>
       </div>
+
+      <div id="drawer" class="emoji-drawer">
+        <div class="emoji" onclick="addEmoji(this.innerHTML)">😊</div>
+        <div class="emoji" onclick="addEmoji(this.innerHTML)">😂</div>
+        <div class="emoji" onclick="addEmoji(this.innerHTML)">😞</div>
+      </div>
+
     </div>
     <p id="greet-msg"></p>
-
   </body>
 </html>
