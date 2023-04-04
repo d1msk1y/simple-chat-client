@@ -14,6 +14,31 @@
   -webkit-text-size-adjust: 100%;
 }
 
+.emoji-drawer {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  width: 100px;
+
+  margin-bottom: 32px;
+  transition: opacity 0.2s;
+}
+
+.hidden {
+  opacity: 0;
+}
+
+.emoji {
+  text-align: center;
+  font-size: 24px;
+  padding: 8px;
+}
+
+.emoji:hover {
+  cursor: pointer;
+}
+
 .container {
   margin: 0;
   padding-top: 10vh;

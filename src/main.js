@@ -1,5 +1,4 @@
 const { invoke } = window.__TAURI__.tauri;
-await PrintMessagePage();
 
 let greetMsgEl;
 let greetInputEl;
@@ -7,6 +6,10 @@ let greetInputEl;
 const getMessageById = messageGetter("get_message_by_id", {id: "0"});
 const getLastMessage = messageGetter("get_last_message");
 const getAllMessages = messageGetter("get_all_messages");
+
+window.onload = async function (){
+  await PrintMessagePage();
+}
 
 function messageGetter(methodName, params = {}) {
   return async function(){
@@ -45,21 +48,33 @@ async function PrintMessagePage(){
   const json = await invoke("get_last_message_page");
   let parse = JSON.parse(json);
   let items = parse.messages.Items;
-  items.forEach(item => {
-    printMessage(item);
-  })
+
+  for (let i = Object.keys(items).length; i >= 0;){
+    i--;
+    await printMessage(items[i]);
+  }
+}
+
+function toggleEmojiDrawer() {
+  let drawer = document.getElementById('drawer');
+
+  if (drawer.classList.contains('hidden')) {
+    drawer.classList.remove('hidden');
+  } else {
+    drawer.classList.add('hidden');
+  }
+}
+
+function addEmoji(emoji) {
+  greetInputEl.value += emoji;
 }
 
 window.addEventListener("DOMContentLoaded", () => {
   greetMsgEl = document.querySelector("#greet-msg");
-  document
-    .querySelector("#greet-button")
-    .addEventListener("click", () => printLastMessage());
-});
+  document.querySelector("#greet-button")
+      .addEventListener("click", () => printLastMessage());
 
-window.addEventListener("DOMContentLoaded", () => {
   greetInputEl = document.querySelector("#greet-input");
-  document
-      .querySelector("#send-message-button")
+  document.querySelector("#send-message-button")
       .addEventListener("click", () => sendMessage());
 });
