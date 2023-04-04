@@ -26,8 +26,11 @@ struct MessageInfo {
     message: String
 }
 
+#[derive(Serialize, Deserialize, Debug)]
 struct MessagePage {
-
+    messages: String,
+    pageSize: String,
+    total: String
 }
 
 async fn get_request(endpoint: &str) -> Result<String, Error>{
@@ -121,6 +124,7 @@ async fn get_all_messages() -> Result<String, String> {
 #[tauri::command]
 async fn get_last_message() -> Result<String, String> {
     let endpoint = "/messages/last";
+    get_last_message_page().await?;
     get_request(endpoint).await.map_err(|e|e.to_string())
 }
 

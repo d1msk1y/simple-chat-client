@@ -1,4 +1,5 @@
 const { invoke } = window.__TAURI__.tauri;
+await PrintMessagePage();
 
 let greetMsgEl;
 let greetInputEl;
@@ -40,6 +41,14 @@ async function sendMessage(){
   await invoke("send_message", {message: greetInputEl.value});
 }
 
+async function PrintMessagePage(){
+  const json = await invoke("get_last_message_page");
+  let parse = JSON.parse(json);
+  let items = parse.messages.Items;
+  items.forEach(item => {
+    printMessage(item);
+  })
+}
 
 window.addEventListener("DOMContentLoaded", () => {
   greetMsgEl = document.querySelector("#greet-msg");
