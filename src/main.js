@@ -42,6 +42,7 @@ async function printLastMessage() {
 
 async function sendMessage(){
   await invoke("send_message", {message: greetInputEl.value});
+  greetInputEl.value = "";
 }
 
 async function PrintMessagePage(id){
