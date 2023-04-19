@@ -8,7 +8,7 @@ const getLastMessage = messageGetter("get_last_message");
 const getAllMessages = messageGetter("get_all_messages");
 
 window.onload = async function (){
-  await PrintMessagePage("1");
+  await PrintMessagePage("0");
 }
 
 function messageGetter(methodName, params = {}) {
@@ -48,7 +48,7 @@ async function sendMessage(){
 async function PrintMessagePage(id){
   const json = await invoke("get_message_by_page", {id: id});
   let parse = JSON.parse(json);
-  let items = parse.messages.Items;
+  let items = parse.messages;
 
   for (let i = Object.keys(items).length; i >= 0;){
     i--;
