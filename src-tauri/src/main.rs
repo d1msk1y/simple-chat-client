@@ -11,6 +11,7 @@ use tauri::CursorIcon::Text;
 use chrono;
 use tungstenite::{connect, Message};
 use web_sys;
+use std::env;
 use std::thread;
 use tauri::Error::Runtime;
 use tokio::runtime;
@@ -59,6 +60,14 @@ async fn post_json(endpoint: &str, json: &str) -> Result<(), Error>{
     Ok(())
 }
 
+async fn get_token() {
+    let endpoint ="/token";
+    let token = get_request(endpoint).await.unwrap();
+    let key = "CHATTOKEN";
+    env::set_var(key, &token);
+    assert_eq!(env::var(key), Ok(token.to_string()));
+}
+
 #[tauri::command]
 async fn send_message(message:&str) -> Result<(), String> {
     let last_message_json = get_last_message().await?;
@@ -81,6 +90,7 @@ async fn send_message(message:&str) -> Result<(), String> {
 
 #[tauri::command]
 async fn ws_handshake() {
+    get_token().await;
     let (mut socket, _) = connect("ws://localhost:8080/ws").expect("Failed to connect");
     loop {
         let message = socket.read_message().expect("Failed to receive message");
