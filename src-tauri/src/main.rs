@@ -16,6 +16,7 @@ use std::thread;
 use tauri::Error::Runtime;
 use tokio::runtime;
 use tauri::Window;
+use reqwest::header::USER_AGENT;
 
 static SERVER_ADDRESS: &str = "http://localhost:8080";
 
@@ -35,13 +36,22 @@ struct MessagePage {
 }
 
 async fn get_request(endpoint: &str) -> Result<String, Error>{
+    let token = env::var("CHATTOKEN")
+        .unwrap_or_else(|err| {
+            println!("Failed to retrieve token: {}", err);
+            "".to_string() // Provide a default value or fallback action
+        });
+
     let url = SERVER_ADDRESS.to_owned() + &endpoint;
-    let response = reqwest::get(&url)
+    let response = reqwest::Client::new()
+        .get(&url)
+        .header("Token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e30.WeQd5XffXn9RYYfdLCgihtFU4bqaQ1o4b9PE84Z6sRk")
+        .send()
         .await?
         .text()
         .await?;
-    println!("{}", &url);
-    println!("{}", response);
+     println!("{}", &url);
+     println!("{}", response);
     Ok(format!("{}", response))
 }
 
