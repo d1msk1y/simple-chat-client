@@ -31,7 +31,8 @@ function createMessageBox(message){
 
 async function printMessage(message){
   let messageBox = createMessageBox(message);
-  document.getElementById("greeting-panel").appendChild(messageBox);
+  let messagePanel = document.getElementById("message-panel");
+  messagePanel.insertBefore(messageBox,messagePanel.firstChild);
 
   window.scrollTo(0, document.body.scrollHeight);
 }

@@ -45,7 +45,7 @@ async fn get_request(endpoint: &str) -> Result<String, Error>{
     let url = SERVER_ADDRESS.to_owned() + &endpoint;
     let response = reqwest::Client::new()
         .get(&url)
-        .header("Token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e30.WeQd5XffXn9RYYfdLCgihtFU4bqaQ1o4b9PE84Z6sRk")
+        .header("Token", token)
         .send()
         .await?
         .text()
