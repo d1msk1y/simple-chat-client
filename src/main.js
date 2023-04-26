@@ -11,6 +11,9 @@ window.onload = async function (){
   await PrintMessagePage("0");
 }
 
+let messagePageIndex = 0;
+let lastMessageId = 0;
+
 function messageGetter(methodName, params = {}) {
   return async function(){
     const json = await invoke(methodName, params);
@@ -32,7 +35,13 @@ function createMessageBox(message){
 async function printMessage(message){
   let messageBox = createMessageBox(message);
   let messagePanel = document.getElementById("message-panel");
-  messagePanel.insertBefore(messageBox,messagePanel.firstChild);
+
+  if (messageBox.id >= lastMessageId){
+    lastMessageId = messageBox.id;
+    messagePanel.append(messageBox);
+  } else {
+    messagePanel.insertBefore(messageBox,messagePanel.firstChild);
+  }
 
   window.scrollTo(0, document.body.scrollHeight);
 }
@@ -51,8 +60,8 @@ async function PrintMessagePage(id){
   let parse = JSON.parse(json);
   let items = parse.messages;
 
-  for (let i = Object.keys(items).length; i >= 0;){
-    i--;
+  for (let i = 0; i <= Object.keys(items).length;){
+    i++;
     await printMessage(items[i]);
   }
 }
@@ -66,3 +75,10 @@ window.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#send-message-button")
       .addEventListener("click", () => sendMessage());
 });
+
+window.onwheel = async e => {
+  if (e.deltaY < 0 && window.scrollY == 0) {
+    let indexString = (messagePageIndex + 1).toString()
+    await PrintMessagePage(indexString);
+  }
+}
