@@ -1,1 +1,2 @@
-# Chat-Client 
+# chat-client
+Simple chat client written in go.
