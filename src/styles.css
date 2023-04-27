@@ -14,6 +14,13 @@
   -webkit-text-size-adjust: 100%;
 }
 
+.message-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 800px;
+}
+
 .emoji-drawer {
   display: grid;
 
