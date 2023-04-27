@@ -36,14 +36,14 @@ async function printMessage(message){
   let messageBox = createMessageBox(message);
   let messagePanel = document.getElementById("message-panel");
 
-  if (messageBox.id >= lastMessageId){
-    lastMessageId = messageBox.id;
+  let messageId = parseInt(messageBox.id);
+  if (messageId >= lastMessageId){
+    lastMessageId = messageId;
     messagePanel.append(messageBox);
+    window.scrollTo(0, document.body.scrollHeight);
   } else {
     messagePanel.insertBefore(messageBox,messagePanel.firstChild);
   }
-
-  window.scrollTo(0, document.body.scrollHeight);
 }
 
 async function printLastMessage() {
@@ -61,8 +61,8 @@ async function PrintMessagePage(id){
   let items = parse.messages;
 
   for (let i = 0; i <= Object.keys(items).length;){
-    i++;
     await printMessage(items[i]);
+    i++;
   }
 }
 

@@ -1,5 +1,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod login;
+
 use std::fmt::format;
 use std::io::Read;
 use std::net::ToSocketAddrs;
@@ -57,7 +59,6 @@ async fn get_request(endpoint: &str) -> Result<String, Error>{
 
 async fn post_json(endpoint: &str, json: &str) -> Result<(), Error>{
     let client = reqwest::Client::new();
-
     let json_sting = json.to_string();
 
     let response = client
@@ -68,14 +69,6 @@ async fn post_json(endpoint: &str, json: &str) -> Result<(), Error>{
         .await?;
 
     Ok(())
-}
-
-async fn get_token() {
-    let endpoint ="/token";
-    let token = get_request(endpoint).await.unwrap();
-    let key = "CHATTOKEN";
-    env::set_var(key, &token);
-    assert_eq!(env::var(key), Ok(token.to_string()));
 }
 
 #[tauri::command]
@@ -100,7 +93,7 @@ async fn send_message(message:&str) -> Result<(), String> {
 
 #[tauri::command]
 async fn ws_handshake() {
-    get_token().await;
+    login::auth().await;
     let (mut socket, _) = connect("ws://localhost:8080/ws").expect("Failed to connect");
     loop {
         let message = socket.read_message().expect("Failed to receive message");
