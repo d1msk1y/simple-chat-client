@@ -93,7 +93,6 @@ async fn send_message(message:&str) -> Result<(), String> {
 
 #[tauri::command]
 async fn ws_handshake() {
-    login::auth().await;
     let (mut socket, _) = connect("ws://localhost:8080/ws").expect("Failed to connect");
     loop {
         let message = socket.read_message().expect("Failed to receive message");
@@ -133,6 +132,11 @@ async fn get_last_message() -> Result<String, String> {
     get_request(endpoint).await.map_err(|e|e.to_string())
 }
 
+#[tauri::command]
+async fn auth(username: &str) -> Result<bool, bool> {
+    login::auth(username).await
+}
+
 #[tokio::main]
 async fn main() {
     let rt = tokio::runtime::Runtime::new().unwrap();
@@ -149,7 +153,8 @@ async fn main() {
             get_last_message,
             ws_handshake,
             send_message,
-            get_message_by_page
+            get_message_by_page,
+            auth
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

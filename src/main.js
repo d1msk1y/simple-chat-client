@@ -36,7 +36,7 @@ async function printMessage(message){
   let messageBox = createMessageBox(message);
   let messagePanel = document.getElementById("message-panel");
 
-  let messageId = parseInt(messageBox.id);
+  let messageId = parseInt(message.id);
   if (messageId >= lastMessageId){
     lastMessageId = messageId;
     messagePanel.append(messageBox);
@@ -44,6 +44,7 @@ async function printMessage(message){
   } else {
     messagePanel.insertBefore(messageBox,messagePanel.firstChild);
   }
+  document.querySelector("#debug-text").textContent = lastMessageId.toString();
 }
 
 async function printLastMessage() {
