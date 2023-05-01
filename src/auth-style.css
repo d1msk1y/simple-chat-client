@@ -69,12 +69,7 @@
 .row {
   display: flex;
   justify-content: center;
-  bottom: 0;
-  position: absolute;
-  align-content: center;
-  width:100%;
 }
-
 
 a {
   font-weight: 500;

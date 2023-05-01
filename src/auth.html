@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="auth-style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tauri App</title>
+    <script type="module" src="/auth.js" defer></script>
+    <style>
+      .logo.vanilla:hover {
+        filter: drop-shadow(0 0 2em #ffe21c);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container" id="greeting-panel">
+      <h1>Welcome to Chat-Client!</h1>
+
+      <div class="greeting">
+        <a href="https://github.com/d1msk1y" target="_blank">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" class="logo tauri" alt="Tauri logo" />
+        </a>
+      </div>
+
+      <p>Click on the GitHub logo to learn more about the developer</p>
+
+    </div><div class="message-panel" id="message-panel"></div>
+
+    <div class="row">
+      <div>
+        <input id="login-input" placeholder="Enter a username..." />
+        <button id="auth-button" type="button">Login</button>
+      </div>
+
+    </div>
+  </body>
+</html>
