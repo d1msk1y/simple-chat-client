@@ -1,7 +1,7 @@
 const { invoke } = window.__TAURI__.tauri;
 
 let greetMsgEl;
-let greetInputEl;
+let messageInputEl;
 
 const getMessageById = messageGetter("get_message_by_id", {id: "0"});
 const getLastMessage = messageGetter("get_last_message");
@@ -52,8 +52,8 @@ async function printLastMessage() {
 }
 
 async function sendMessage(){
-  await invoke("send_message", {message: greetInputEl.value});
-  greetInputEl.value = "";
+  await invoke("send_message", {message: messageInputEl.value});
+  messageInputEl.value = "";
 }
 
 async function PrintMessagePage(id){
@@ -72,7 +72,7 @@ window.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#greet-button")
       .addEventListener("click", () => printLastMessage());
 
-  greetInputEl = document.querySelector("#login-input");
+  messageInputEl = document.querySelector("#login-input");
   document.querySelector("#send-message-button")
       .addEventListener("click", () => sendMessage());
 });

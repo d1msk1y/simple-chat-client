@@ -41,7 +41,7 @@
         "fullscreen": false,
         "resizable": true,
         "title": "chat-client",
-        "url": "./index.html",
+        "url": "./auth.html",
         "width": 800,
         "height": 600
       }
