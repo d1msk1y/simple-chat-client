@@ -72,7 +72,7 @@ window.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#greet-button")
       .addEventListener("click", () => printLastMessage());
 
-  greetInputEl = document.querySelector("#greet-input");
+  greetInputEl = document.querySelector("#login-input");
   document.querySelector("#send-message-button")
       .addEventListener("click", () => sendMessage());
 });

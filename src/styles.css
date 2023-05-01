@@ -69,6 +69,10 @@
 .row {
   display: flex;
   justify-content: center;
+  bottom: 0;
+  position: absolute;
+  align-content: center;
+  width:100%;
 }
 
 a {
@@ -116,7 +120,7 @@ button {
   outline: none;
 }
 
-#greet-input {
+#login-input {
   margin-right: 5px;
 }
 
