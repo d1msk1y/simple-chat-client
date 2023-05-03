@@ -12,13 +12,15 @@
 
     <script>
       function addEmoji(emoji) {
-      document.getElementById("login-input").value += emoji;
+      document.getElementById("message-input").value += emoji;
     }
     </script>
 
+    </div><div class="message-panel" id="message-panel"></div>
+
     <div class="row">
       <div>
-        <input id="login-input" placeholder="Message..." />
+        <input id="message-input" placeholder="Message..." />
         <button id="send-message-button" type="button">Send</button>
         <button id="greet-button" type="button">Refresh</button>
       </div>

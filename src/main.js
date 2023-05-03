@@ -34,7 +34,7 @@ function createMessageBox(message){
 
 async function printMessage(message){
   let messageBox = createMessageBox(message);
-  let messagePanel = document.getElementById("message-panel");
+  let messagePanel = document.getElementById("message-panel ");
 
   let messageId = parseInt(message.id);
   if (messageId >= lastMessageId){
@@ -72,7 +72,7 @@ window.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#greet-button")
       .addEventListener("click", () => printLastMessage());
 
-  messageInputEl = document.querySelector("#login-input");
+  messageInputEl = document.querySelector("#message-input");
   document.querySelector("#send-message-button")
       .addEventListener("click", () => sendMessage());
 });

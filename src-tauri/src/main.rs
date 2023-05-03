@@ -1,24 +1,12 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod login;
-
-use std::fmt::format;
-use std::io::Read;
-use std::net::ToSocketAddrs;
-use std::time::Duration;
-use reqwest::{Error, Url};
-use serde::{Deserialize, ser, Serialize};
-use serde_json::{json, Value};
-use tauri::CursorIcon::Text;
+use reqwest::{Error};
+use serde::{Deserialize, Serialize};
 use chrono;
 use tungstenite::{connect, Message};
-use web_sys;
 use std::env;
 use std::thread;
-use tauri::Error::Runtime;
-use tokio::runtime;
-use tauri::Window;
-use reqwest::header::USER_AGENT;
 
 static SERVER_ADDRESS: &str = "http://localhost:8080";
 
@@ -61,7 +49,7 @@ async fn post_json(endpoint: &str, json: &str) -> Result<(), Error>{
     let client = reqwest::Client::new();
     let json_sting = json.to_string();
 
-    let response = client
+    let _response = client
         .post(SERVER_ADDRESS.to_owned() + endpoint)
         .header("Content-Type", "application/json")
         .body(json_sting)
@@ -73,6 +61,7 @@ async fn post_json(endpoint: &str, json: &str) -> Result<(), Error>{
 
 #[tauri::command]
 async fn send_message(message:&str) -> Result<(), String> {
+
     let last_message_json = get_last_message().await?;
     let last_message: MessageInfo = serde_json::from_str(last_message_json.as_str()).unwrap();
 
