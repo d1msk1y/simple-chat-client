@@ -1,6 +1,7 @@
 use std::env;
 use std::fmt::format;
-use reqwest::Error;
+use std::io::ErrorKind;
+use reqwest::{Error, StatusCode};
 use crate::{get_request, SERVER_ADDRESS};
 
 pub async fn auth(username: &str) -> Result<bool,  bool> {
@@ -21,10 +22,15 @@ async fn add_user(username: &str) -> Result<String, Error>{
         .get(&url)
         .header("Username", username)
         .send()
-        .await?
-        .text()
         .await?;
+
     println!("{}", &url);
-    println!("{}", response);
-    Ok(format!("{}", response))
+    if response.status().is_success() {
+        let response_body = response.text().await?;
+        println!("{}", response_body);
+        Ok(format!("{}", response_body))
+    } else {
+        return Err(e)
+    }
+
 }
