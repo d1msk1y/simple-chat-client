@@ -55,10 +55,16 @@ async fn send_message(message:&str) -> Result<(), String> {
 
     println!("Last message index was: {}",last_message.id);
 
+    let nickname = env::var("CHATNICKNAME")
+        .unwrap_or_else(|err| {
+            println!("Failed to retrieve nickname: {}", err);
+            "".to_string() // Provide a default value or fallback action
+        });
+
     let id: i32 = last_message.id.parse().unwrap();
     let m = MessageInfo {
         id: (id + 1).to_string(),
-        username: "d1msk1y 1".to_string(),
+        username: nickname,
         time: chrono::offset::Local::now().to_string(),
         message: message.to_string()
     };
