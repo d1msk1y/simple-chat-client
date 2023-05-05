@@ -1,29 +1,17 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod login;
+mod models;
+
 use reqwest::{Error};
 use serde::{Deserialize, Serialize};
 use chrono;
 use tungstenite::{connect, Message};
 use std::env;
 use std::thread;
+use models::{MessageInfo, MessagePage};
 
 static SERVER_ADDRESS: &str = "http://localhost:8080";
-
-#[derive(Serialize, Deserialize, Debug)]
-struct MessageInfo {
-    id: String,
-    username: String,
-    time: String,
-    message: String
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-struct MessagePage {
-    messages: String,
-    pageSize: String,
-    total: String
-}
 
 async fn get_request(endpoint: &str) -> Result<String, Error>{
     let token = env::var("CHATTOKEN")
