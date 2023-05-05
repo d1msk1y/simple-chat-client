@@ -30,7 +30,7 @@ async fn add_user(username: &str) -> Result<String, Error>{
         println!("{}", response_body);
         Ok(format!("{}", response_body))
     } else {
-        return Err(e)
+        Ok(format!("{}", "Error occurred!"))
     }
 
 }
