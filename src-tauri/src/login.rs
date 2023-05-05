@@ -1,15 +1,28 @@
+use super::models::{MessageInfo, MessagePage};
+
 use std::env;
 use std::fmt::format;
 use std::io::ErrorKind;
 use reqwest::{Error, StatusCode};
 use crate::{get_request, SERVER_ADDRESS};
+use crate::models::User;
 
 pub async fn auth(username: &str) -> Result<bool,  bool> {
-    let token = add_user(username).await.unwrap();
+    let user_string = add_user(username).await.unwrap();
+    let user: User = serde_json::from_str(user_string.as_str()).unwrap();
+
+    let username = user.username;
+    let token = user.jwt;
+
     let key = "CHATTOKEN";
     env::set_var(key, &token);
-    assert_eq!(env::var(key), Ok(token.to_string()));
-    if token != "" {
+    assert_eq!(env::var(key), Ok(token));
+
+    let key = "CHATNICKNAME";
+    env::set_var(key, &username);
+    assert_eq!(env::var(key), Ok(username));
+
+    if user_string != ""{
         Ok(true)
     } else {
         Ok(false)
