@@ -34,11 +34,11 @@ function createMessageBox(message){
 
 async function printMessage(message){
   let messageBox = createMessageBox(message);
-  let messagePanel = document.getElementById("message-panel ");
-
+  let messagePanel = document.getElementById("message-panel");
   let messageId = parseInt(message.id);
   if (messageId >= lastMessageId){
     lastMessageId = messageId;
+    console.log(message);
     messagePanel.append(messageBox);
     window.scrollTo(0, document.body.scrollHeight);
   } else {
