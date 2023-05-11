@@ -13,6 +13,7 @@ window.onload = async function (){
 
 let messagePageIndex = 0;
 let lastMessageId = 0;
+//let messageClass string;
 
 function messageGetter(methodName, params = {}) {
   return async function(){
@@ -21,9 +22,16 @@ function messageGetter(methodName, params = {}) {
   }
 }
 
+//if (username == message.username) {
+//	messageClass = "message-right"
+//}
+//else{
+//	messageClass = "message-left"
+//}
+
 function createMessageBox(message){
   const messageBoxHTML = `
-      <div style="background-color: #e1e1e1; border-radius: 10px; padding: 10px; max-width: 300px;">
+      <div class="${}" style="background-color: #e1e1e1; border-radius: 10px; padding: 10px; max-width: 300px;">
         <p style="font-size: 12px; margin: 0; color: #4b4b4b;">${message.username}</p>
         <p style="font-size: 14px; margin: 0;">${message.message}</p>
         <p style="font-size: 12px; margin: 0; color: #7a7a7a;">Sent at ${message.time}</p>
