@@ -21,6 +21,17 @@
   /*height: 800px;*/
 }
 
+.message-right {
+	display: flex;
+	justify-content: right;
+	
+}
+
+.message-left {
+	display: flex;
+	justify-content: left;
+}
+
 .emoji-drawer {
   display: grid;
 
