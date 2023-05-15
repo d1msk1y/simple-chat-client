@@ -20,6 +20,7 @@ async fn get_request(endpoint: &str) -> Result<String, Error>{
             "".to_string() // Provide a default value or fallback action
         });
 
+    println!("{}", &token);
     let url = SERVER_ADDRESS.to_owned() + &endpoint;
     let response = reqwest::Client::new()
         .get(&url)
@@ -120,6 +121,11 @@ async fn auth(username: &str) -> Result<bool, bool> {
     login::auth(username).await
 }
 
+#[tauri::command]
+fn get_env_var(name: String) -> Option<String> {
+    env::var(name).ok()
+}
+
 #[tokio::main]
 async fn main() {
     let rt = tokio::runtime::Runtime::new().unwrap();
@@ -137,7 +143,8 @@ async fn main() {
             ws_handshake,
             send_message,
             get_message_by_page,
-            auth
+            auth,
+            get_env_var
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

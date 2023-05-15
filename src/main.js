@@ -2,6 +2,7 @@ const { invoke } = window.__TAURI__.tauri;
 
 let greetMsgEl;
 let messageInputEl;
+let username;
 
 const getMessageById = messageGetter("get_message_by_id", {id: "0"});
 const getLastMessage = messageGetter("get_last_message");
@@ -9,11 +10,11 @@ const getAllMessages = messageGetter("get_all_messages");
 
 window.onload = async function (){
   await PrintMessagePage("0");
+  let username = await invoke ("get_env_var", {name: "CHATNICKNAME"})
 }
 
 let messagePageIndex = 0;
 let lastMessageId = 0;
-//let messageClass string;
 
 function messageGetter(methodName, params = {}) {
   return async function(){
@@ -22,16 +23,18 @@ function messageGetter(methodName, params = {}) {
   }
 }
 
-//if (username == message.username) {
-//	messageClass = "message-right"
-//}
-//else{
-//	messageClass = "message-left"
-//}
 
 function createMessageBox(message){
+  let messageClass;
+
+  if (username === message.username) {
+    messageClass = "message-right"
+  }
+  else{
+    messageClass = "message-left"
+  }
   const messageBoxHTML = `
-      <div class="${}" style="background-color: #e1e1e1; border-radius: 10px; padding: 10px; max-width: 300px;">
+      <div class="${messageClass}" style="background-color: #e1e1e1; border-radius: 10px; padding: 10px; max-width: 300px;">
         <p style="font-size: 12px; margin: 0; color: #4b4b4b;">${message.username}</p>
         <p style="font-size: 14px; margin: 0;">${message.message}</p>
         <p style="font-size: 12px; margin: 0; color: #7a7a7a;">Sent at ${message.time}</p>
@@ -44,6 +47,7 @@ async function printMessage(message){
   let messageBox = createMessageBox(message);
   let messagePanel = document.getElementById("message-panel");
   let messageId = parseInt(message.id);
+  if (message.name === getenv("CHATNICKNAME"))
   if (messageId >= lastMessageId){
     lastMessageId = messageId;
     console.log(message);
