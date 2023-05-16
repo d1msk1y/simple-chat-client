@@ -1,10 +1,10 @@
 use super::models::{MessageInfo, MessagePage};
+use super::http_client::{SERVER_ADDRESS};
 
 use std::env;
 use std::fmt::format;
 use std::io::ErrorKind;
 use reqwest::{Error, StatusCode};
-use crate::{get_request, SERVER_ADDRESS};
 use crate::models::User;
 
 pub async fn auth(username: &str) -> Result<bool,  bool> {
