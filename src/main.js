@@ -64,6 +64,11 @@ async function printLastMessage() {
 }
 
 async function sendMessage(){
+  if (messageInputEl.value === "") {
+    document.querySelector("#msg").textContent = "Message cannot be empty!"
+    return
+  }
+
   await invoke("send_message", {message: messageInputEl.value});
   messageInputEl.value = "";
 }
