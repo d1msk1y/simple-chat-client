@@ -9,7 +9,10 @@ const getLastMessage = messageGetter("get_last_message");
 const getAllMessages = messageGetter("get_all_messages");
 
 window.onload = async function (){
-  await PrintMessagePage("0");
+  let lastMessage = getLastMessage();
+  if (lastMessage.id !== ""){
+    // await PrintMessagePage("0");
+  }
   let username = await invoke ("get_env_var", {name: "CHATNICKNAME"})
 }
 
@@ -46,8 +49,7 @@ function createMessageBox(message){
 async function printMessage(message){
   let messageBox = createMessageBox(message);
   let messagePanel = document.getElementById("message-panel");
-  let messageId = parseInt(message.id);
-  if (message.name === getenv("CHATNICKNAME"))
+  let messageId = parseInt(message.id, 10);
   if (messageId >= lastMessageId){
     lastMessageId = messageId;
     console.log(message);
