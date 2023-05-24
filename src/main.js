@@ -4,13 +4,10 @@ let greetMsgEl;
 let messageInputEl;
 let username;
 
-const getMessageById = messageGetter("get_message_by_id", {id: "0"});
-const getLastMessage = messageGetter("get_last_message");
-const getAllMessages = messageGetter("get_all_messages");
+const getLastMessage = messageGetter("get_message_by_id", {id: "0"});
 
 window.onload = async function (){
-  await PrintMessagePage("0");
-  let username = await invoke ("get_env_var", {name: "CHATNICKNAME"})
+  username = await invoke ("get_env_var", {name: "CHATNICKNAME"})
 }
 
 let messagePageIndex = 0;
@@ -23,7 +20,6 @@ function messageGetter(methodName, params = {}) {
   }
 }
 
-
 function createMessageBox(message){
   let messageClass;
 
@@ -34,7 +30,7 @@ function createMessageBox(message){
     messageClass = "message-left"
   }
   const messageBoxHTML = `
-      <div class="${messageClass}" style="background-color: #e1e1e1; border-radius: 10px; padding: 10px; max-width: 300px;">
+      <div class="${"message-left"}" style="background-color: #e1e1e1; border-radius: 10px; padding: 10px; max-width: 300px;">
         <p style="font-size: 12px; margin: 0; color: #4b4b4b;">${message.username}</p>
         <p style="font-size: 14px; margin: 0;">${message.message}</p>
         <p style="font-size: 12px; margin: 0; color: #7a7a7a;">Sent at ${message.time}</p>
@@ -46,8 +42,7 @@ function createMessageBox(message){
 async function printMessage(message){
   let messageBox = createMessageBox(message);
   let messagePanel = document.getElementById("message-panel");
-  let messageId = parseInt(message.id);
-  if (message.name === getenv("CHATNICKNAME"))
+  let messageId = parseInt(message.id, 10);
   if (messageId >= lastMessageId){
     lastMessageId = messageId;
     console.log(message);
