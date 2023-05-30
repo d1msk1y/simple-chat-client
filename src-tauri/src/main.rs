@@ -3,6 +3,7 @@
 mod login;
 mod models;
 mod http_client;
+mod multi_room;
 
 use reqwest::{Error};
 use serde::{Deserialize, Serialize};
@@ -12,6 +13,7 @@ use std::env;
 use std::thread;
 use models::{MessageInfo, MessagePage};
 use http_client::{get_request, post_json};
+use crate::multi_room::create_new_room;
 
 #[tauri::command]
 async fn send_message(message:&str) -> Result<(), String> {
@@ -33,6 +35,7 @@ async fn send_message(message:&str) -> Result<(), String> {
 
     let m = MessageInfo {
         id: (id + 1).to_string(),
+        roomId: get_env_var("ROOMID".to_string()).unwrap(),
         username: nickname,
         time: chrono::offset::Local::now().to_string(),
         message: message.to_string()
@@ -87,6 +90,11 @@ fn get_env_var(name: String) -> Option<String> {
     env::var(name).ok()
 }
 
+#[tauri::command]
+async fn post_new_room() -> String {
+    create_new_room().await
+}
+
 #[tokio::main]
 async fn main() {
     let rt = tokio::runtime::Runtime::new().unwrap();
@@ -104,7 +112,8 @@ async fn main() {
             send_message,
             get_message_by_page,
             auth,
-            get_env_var
+            get_env_var,
+            post_new_room
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
