@@ -3,6 +3,7 @@ const { invoke } = window.__TAURI__.tauri;
 let loginInputEl;
 let roomCodeInputEl;
 let roomCode;
+let roomId;
 
 async function auth(){
   await invoke("auth", {username: loginInputEl.value})
@@ -14,7 +15,10 @@ async function joinRoom() {
 }
 
 async function newRoom() {
-  roomCode = await invoke ("post_new_room");
+  let roomJSON = await invoke ("post_new_room");
+  let parsedRoom = JSON.parse(roomJSON);
+  roomCode = parsedRoom.code;
+  roomId = parsedRoom.id;
   await auth();
 }
 

@@ -90,7 +90,7 @@ fn get_env_var(name: String) -> Option<String> {
 }
 
 #[tauri::command]
-async fn post_new_room() {
+async fn post_new_room() -> String {
     create_new_room().await
 }
 
