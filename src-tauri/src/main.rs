@@ -35,6 +35,7 @@ async fn send_message(message:&str) -> Result<(), String> {
 
     let m = MessageInfo {
         id: (id + 1).to_string(),
+        roomId: get_env_var("ROOMID".to_string()).unwrap(),
         username: nickname,
         time: chrono::offset::Local::now().to_string(),
         message: message.to_string()

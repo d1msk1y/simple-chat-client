@@ -11,5 +11,10 @@ pub async fn create_new_room() -> String {
     let key = "ROOMCODE";
     env::set_var(key, &new_room.code);
     assert_eq!(env::var(key), Ok(new_room.code));
+
+    let key = "ROOMID";
+    env::set_var(key, &new_room.id);
+    assert_eq!(env::var(key), Ok(new_room.id));
+
     response
 }
