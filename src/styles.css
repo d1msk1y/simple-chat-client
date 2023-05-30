@@ -83,8 +83,14 @@
 }
 
 .login-panel {
-  display: flex;
+  display: contents;
+  margin-top: 100px;
   justify-content: center;
+}
+
+.room-panel{
+  display: flex;
+  justify-content: left;
 }
 
 a {
