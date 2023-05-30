@@ -21,3 +21,9 @@ pub struct User {
     pub username: String,
     pub jwt: String,
 }
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Room {
+    pub id: String,
+    pub code: String,
+}
