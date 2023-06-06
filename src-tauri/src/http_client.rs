@@ -4,22 +4,26 @@ use chrono;
 use tungstenite::{connect, Message};
 use std::env;
 use std::thread;
+use reqwest::header::{HeaderMap, HeaderValue};
+use crate::get_env_var;
 use crate::models::{MessageInfo, MessagePage};
 
 pub static SERVER_ADDRESS: &str = "http://localhost:8080";
 
 pub async fn get_request(endpoint: &str) -> Result<String, Error>{
-    let token = env::var("CHATTOKEN")
-        .unwrap_or_else(|err| {
-            println!("Failed to retrieve token: {}", err);
-            "".to_string() // Provide a default value or fallback action
-        });
+    let token = get_env_var("CHATTOKEN".to_string()).unwrap();
+
+    let room_id = get_env_var("ROOMID".to_string()).unwrap();
+
+    let mut headers = HeaderMap::new();
+    headers.insert("Token", HeaderValue::from_str(token.as_str()).unwrap());
+    headers.insert("RoomID", HeaderValue::from_str(room_id.as_str()).unwrap());
 
     println!("{}", &token);
     let url = SERVER_ADDRESS.to_owned() + &endpoint;
     let response = reqwest::Client::new()
         .get(&url)
-        .header("Token", token)
+        .headers(headers)
         .send()
         .await?
         .text()

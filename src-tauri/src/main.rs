@@ -13,7 +13,7 @@ use std::env;
 use std::thread;
 use models::{MessageInfo, MessagePage};
 use http_client::{get_request, post_json};
-use crate::multi_room::create_new_room;
+use crate::multi_room::{create_new_room, join_room};
 
 #[tauri::command]
 async fn send_message(message:&str) -> Result<(), String> {
@@ -95,6 +95,9 @@ async fn post_new_room() -> String {
     create_new_room().await
 }
 
+#[tauri::command]
+async fn join_room_by_code(join_code: String) -> String { join_room(join_code).await }
+
 #[tokio::main]
 async fn main() {
     let rt = tokio::runtime::Runtime::new().unwrap();
@@ -113,7 +116,8 @@ async fn main() {
             get_message_by_page,
             auth,
             get_env_var,
-            post_new_room
+            post_new_room,
+            join_room_by_code
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
