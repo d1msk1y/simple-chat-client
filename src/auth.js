@@ -12,6 +12,7 @@ async function auth(){
 
 async function joinRoom() {
   await auth();
+  await invoke ()
 }
 
 async function newRoom() {

@@ -8,6 +8,12 @@ pub async fn create_new_room() -> String {
     let response = get_request(endpoint).await.map_err(|e|e.to_string()).unwrap();
     let new_room: Room = serde_json::from_str(response.as_str()).expect("JSON was not well-formatted");
 
+    cache_room(new_room);
+
+    response
+}
+
+fn cache_room(new_room: Room) {
     let room_code = new_room.code;
     let room_id = new_room.id;
 
@@ -18,6 +24,4 @@ pub async fn create_new_room() -> String {
     let key = "ROOMID";
     env::set_var(key, &room_id);
     assert_eq!(env::var(key), Ok(room_id));
-
-    response
 }
