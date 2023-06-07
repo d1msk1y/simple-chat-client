@@ -11,9 +11,8 @@ use crate::models::{MessageInfo, MessagePage};
 pub static SERVER_ADDRESS: &str = "http://localhost:8080";
 
 pub async fn get_request(endpoint: &str) -> Result<String, Error>{
-    let token = get_env_var("CHATTOKEN".to_string()).unwrap();
-
-    let room_id = get_env_var("ROOMID".to_string()).unwrap();
+    let token = get_env_var("CHATTOKEN".to_string());
+    let room_id = get_env_var("ROOMID".to_string());
 
     let mut headers = HeaderMap::new();
     headers.insert("Token", HeaderValue::from_str(token.as_str()).unwrap());
@@ -28,7 +27,7 @@ pub async fn get_request(endpoint: &str) -> Result<String, Error>{
         .await?
         .text()
         .await?;
-    println!("{}", &url);
+    println!("Address: {}; Headers: {}", &url, room_id);
     println!("{}", response);
     Ok(format!("{}", response))
 }
