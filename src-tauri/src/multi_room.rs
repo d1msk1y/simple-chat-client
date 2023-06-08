@@ -7,8 +7,8 @@ fn cache_room(room: Room) {
     let room_code = room.code;
     let room_id = room.id;
 
-    println!("{}", &room_id);
-    println!("{}", &room_code);
+    println!("room id: {}", &room_id);
+    println!("room code: {}", &room_code);
 
     let key = "ROOMCODE";
     env::set_var(key, &room_code);
