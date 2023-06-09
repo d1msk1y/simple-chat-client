@@ -4,6 +4,7 @@
   line-height: 24px;
   font-weight: 400;
 
+
   color: #0f0f0f;
   background-color: #f6f6f6;
 
@@ -12,6 +13,13 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .message-panel {
@@ -160,4 +168,33 @@ button {
   button:active {
     background-color: #0f0f0f69;
   }
+}
+
+.top-bar {
+  background-color: #f1f1f1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.title {
+  font-weight: bold;
+  margin: 0;
+  padding: 5px 10px 0;
+  font-size: 16px;
+}
+
+.paragraphs {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.paragraphs p {
+  margin: 0;
+  padding: 0 10px;
+  font-size: 14px;
 }
