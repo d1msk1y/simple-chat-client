@@ -24,10 +24,16 @@
 
 .message-panel {
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
-  /*height: 800px;*/
+  align-items: center;
+  margin: 10px;
 }
+
+.row {
+  display: flex;
+  justify-content: center;
+}
+
 
 .message-right {
 	display: flex;
@@ -85,10 +91,6 @@
   filter: drop-shadow(0 0 2em #24c8db);
 }
 
-.row {
-  display: flex;
-  justify-content: center;
-}
 
 .login-panel {
   display: contents;
