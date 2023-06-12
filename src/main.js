@@ -27,6 +27,10 @@ window.onload = async function (){
   await displayRoomCredentials();
 }
 
+function copyToClipboard(textElement) {
+  navigator.clipboard.writeText(textElement.textContent);
+}
+
 let messagePageIndex = 0;
 let lastMessageId = 0;
 
@@ -104,6 +108,9 @@ window.addEventListener("DOMContentLoaded", () => {
   messageInputEl = document.querySelector("#message-input");
   document.querySelector("#send-message-button")
       .addEventListener("click", () => sendMessage());
+
+  document.querySelector("#copy-room-button")
+      .addEventListener("click", () => copyToClipboard(roomCodeText));
 });
 
 window.onwheel = async e => {
