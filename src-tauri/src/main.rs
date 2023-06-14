@@ -5,14 +5,18 @@ mod models;
 mod http_client;
 mod multi_room;
 
+use std::collections::HashMap;
 use reqwest::{Error};
 use serde::{Deserialize, Serialize};
 use chrono;
 use tungstenite::{connect, Message};
 use std::env;
+use std::ptr::null;
 use std::thread;
+use serde::de::Unexpected::Option;
 use models::{MessageInfo, MessagePage};
 use http_client::{get_request, post_json};
+use crate::http_client::empty_headers;
 use crate::multi_room::{create_new_room, join_room};
 
 #[tauri::command]
@@ -53,7 +57,7 @@ async fn ws_handshake() {
 async fn get_message_by_id(id: &str) -> Result<String, String>
 {
     let endpoint = "/messages/".to_owned() + id;
-    get_request(endpoint.as_str()).await.map_err(|e| e.to_string())
+    get_request(endpoint.as_str(), empty_headers()).await.map_err(|e| e.to_string())
 }
 
 
@@ -61,13 +65,13 @@ async fn get_message_by_id(id: &str) -> Result<String, String>
 async fn get_message_by_page(id: &str) -> Result<String, String>
 {
     let endpoint = "/messages/pages/".to_owned() + id;
-    get_request(endpoint.as_str()).await.map_err(|e| e.to_string())
+    get_request(endpoint.as_str(), empty_headers()).await.map_err(|e| e.to_string())
 }
 
 #[tauri::command]
 async fn get_all_messages() -> Result<String, String> {
     let endpoint = "/messages";
-    get_request(endpoint).await.map_err(|e|e.to_string())
+    get_request(endpoint, empty_headers()).await.map_err(|e|e.to_string())
 }
 
 #[tauri::command]

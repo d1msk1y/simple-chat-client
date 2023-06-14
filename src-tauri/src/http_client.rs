@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use reqwest::{Error};
 use serde::{Deserialize, Serialize};
 use chrono;
@@ -10,13 +11,21 @@ use crate::models::{MessageInfo, MessagePage};
 
 pub static SERVER_ADDRESS: &str = "http://localhost:8080";
 
-pub async fn get_request(endpoint: &str) -> Result<String, Error>{
+pub fn empty_headers() -> Option<HeaderMap> {
+    None
+}
+
+pub async fn get_request(endpoint: &str, extra_headers: Option<HeaderMap>) -> Result<String, Error>{
     let token = get_env_var("CHATTOKEN".to_string());
     let room_id = get_env_var("ROOMID".to_string());
 
     let mut headers = HeaderMap::new();
     headers.insert("Token", HeaderValue::from_str(token.as_str()).unwrap());
     headers.insert("RoomID", HeaderValue::from_str(room_id.as_str()).unwrap());
+
+    if let Some(extra_headers) = extra_headers{
+        headers.extend(extra_headers.into_iter());
+    }
 
     println!("{}", &token);
     let url = SERVER_ADDRESS.to_owned() + &endpoint;
