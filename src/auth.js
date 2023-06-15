@@ -11,8 +11,8 @@ async function auth(){
 }
 
 async function joinRoom() {
+  await invoke("join_room_by_code", { join_code: roomCodeInputEl.value });
   await auth();
-  await invoke ("join_room_by_code", {join_code: roomCodeInputEl.value});
 }
 
 async function newRoom() {
