@@ -2,7 +2,7 @@ use std::env;
 use reqwest::Error;
 use tauri::http::header::{HeaderMap, HeaderValue};
 use crate::get_env_var;
-use crate::http_client::{get_request, SERVER_ADDRESS, empty_headers};
+use crate::http_client::{get_request, SERVER_ADDRESS, empty_headers, post_json, post_request};
 use crate::models::Room;
 
 fn cache_room(room: Room) {
@@ -38,7 +38,7 @@ pub async fn join_room(join_code: &str) -> String {
     let mut headers = HeaderMap::new();
     let username = get_env_var("CHATNICKNAME".to_string());
     headers.insert("Username", username.to_string().parse().unwrap());
-    let response = get_request("/rooms/join", Option::from(headers));
+    let response = post_request("/rooms/join", Option::from(headers));
 
 
     response_room
