@@ -1,5 +1,7 @@
 use std::env;
 use reqwest::Error;
+use tauri::http::header::{HeaderMap, HeaderValue};
+use crate::get_env_var;
 use crate::http_client::{get_request, SERVER_ADDRESS, empty_headers};
 use crate::models::Room;
 
@@ -27,12 +29,17 @@ pub async fn create_new_room() -> String {
     response
 }
 
-pub async fn join_room(join_code: String) -> String {
-    let endpoint = "/rooms/code/".to_owned() + join_code.as_str();
-    let response = get_request(endpoint.as_str(), empty_headers()).await.map_err(|e|e.to_string()).unwrap();
-    let joined_room: Room = serde_json::from_str(response.as_str()).expect("JSON was not well-formatted");
+pub async fn join_room(join_code: &str) -> String {
+    let endpoint = "/rooms/code/".to_owned() + join_code;
+    let response_room = get_request(endpoint.as_str(), empty_headers()).await.map_err(|e|e.to_string()).unwrap();
+    let joined_room: Room = serde_json::from_str(response_room.as_str()).expect("JSON was not well-formatted");
     cache_room(joined_room);
 
+    let mut headers = HeaderMap::new();
+    let username = get_env_var("CHATNICKNAME".to_string());
+    headers.insert("Username", username.to_string().parse().unwrap());
+    let response = get_request("/rooms/join", Option::from(headers));
 
-    response
+
+    response_room
 }

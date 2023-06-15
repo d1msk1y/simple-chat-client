@@ -94,7 +94,7 @@ async fn post_new_room() -> String {
 }
 
 #[tauri::command]
-async fn join_room_by_code(join_code: String) -> String { join_room(join_code).await }
+async fn join_room_by_code(join_code: String) -> String { join_room(join_code.as_str()).await }
 
 #[tokio::main]
 async fn main() {
