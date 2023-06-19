@@ -21,6 +21,7 @@ pub struct User {
     pub id: String,
     pub username: String,
     pub jwt: String,
+    pub room_id: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]

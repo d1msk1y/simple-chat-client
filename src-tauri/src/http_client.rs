@@ -33,12 +33,12 @@ fn merge_headers(mut headers: Option<HeaderMap>, extra_headers: Option<HeaderMap
 }
 
 pub async fn get_request(endpoint: &str, extra_headers: Option<HeaderMap>) -> Result<String, Error>{
-    let headers = merge_headers(security_headers(), extra_headers);
+    let headers = merge_headers(security_headers(), extra_headers).unwrap_or_default();
 
     let url = SERVER_ADDRESS.to_owned() + &endpoint;
     let response = reqwest::Client::new()
         .get(&url)
-        .headers(headers.unwrap())
+        .headers(headers)
         .send()
         .await?
         .text()

@@ -8,7 +8,7 @@ use reqwest::{Error, StatusCode};
 use crate::models::User;
 
 pub async fn auth(username: &str) -> Result<bool,  bool> {
-    let user_string = add_user(username).await.unwrap();
+    let user_string = try_add_user(username).await.unwrap();
     let user: User = serde_json::from_str(user_string.as_str()).unwrap();
 
     let username = user.username;
@@ -29,7 +29,7 @@ pub async fn auth(username: &str) -> Result<bool,  bool> {
     }
 }
 
-async fn add_user(username: &str) -> Result<String, Error>{
+async fn try_add_user(username: &str) -> Result<String, Error>{
     let url = SERVER_ADDRESS.to_owned() + "/auth";
     let response = reqwest::Client::new()
         .get(&url)

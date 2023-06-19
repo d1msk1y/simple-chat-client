@@ -40,6 +40,5 @@ pub async fn join_room(join_code: &str) -> String {
     headers.insert("Username", username.to_string().parse().unwrap());
     let response = post_request("/rooms/join", Option::from(headers));
 
-
     response_room
 }

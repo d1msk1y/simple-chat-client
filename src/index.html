@@ -25,27 +25,31 @@
     }
     </script>
 
-    <div class="message-panel" id="message-panel"></div>
-
-    <div class="row">
-      <div>
-        <input id="message-input" placeholder="Message..." />
-        <button id="send-message-button" type="button">Send</button>
-        <button id="greet-button" type="button">Refresh</button>
-      </div>
-
-      <div id="drawer" class="emoji-drawer">
-        <div class="emoji" onclick="addEmoji(this.innerHTML)">😊</div>
-        <div class="emoji" onclick="addEmoji(this.innerHTML)">😂</div>
-        <div class="emoji" onclick="addEmoji(this.innerHTML)">😞</div>
-      </div>
-
-    </div>
-
     <div>
       <p id="debug-text"></p>
       <p id="msg"></p>
     </div>
+
+  <div class="bottom-bar">
+    <div class="paragraphs">
+      <div class="message-panel" id="message-panel"></div>
+
+      <div class="row">
+        <div>
+          <input id="message-input" placeholder="Message..." />
+          <button id="send-message-button" type="button">Send</button>
+          <button id="greet-button" type="button">Refresh</button>
+        </div>
+
+        <div id="drawer" class="emoji-drawer">
+          <div class="emoji" onclick="addEmoji(this.innerHTML)">😊</div>
+          <div class="emoji" onclick="addEmoji(this.innerHTML)">😂</div>
+          <div class="emoji" onclick="addEmoji(this.innerHTML)">😞</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
   </body>
 </html>

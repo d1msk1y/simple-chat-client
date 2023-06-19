@@ -5,14 +5,17 @@ let roomCodeInputEl;
 let roomCode;
 let roomId;
 
-async function auth(){
-  await invoke("auth", {username: loginInputEl.value})
-  window.location.href = "index.html";
+async function auth() {
+  return await invoke("auth", {username: loginInputEl.value})
 }
 
 async function joinRoom() {
-  await invoke("join_room_by_code", { join_code: roomCodeInputEl.value });
-  await auth();
+  let result = await auth();
+  await invoke("get_message_by_id", { join_code: roomCodeInputEl.value });
+  if (result === true){
+    window.location.href = "index.html";
+
+  }
 }
 
 async function newRoom() {
