@@ -6,19 +6,12 @@ use crate::http_client::{get_request, SERVER_ADDRESS, empty_headers, post_json, 
 use crate::models::Room;
 
 fn cache_room(room: Room) {
-    let room_code = room.code;
-    let room_id = room.id;
+    let room_token = room.token;
+    println!("room token: {}", &room_token);
 
-    println!("room id: {}", &room_id);
-    println!("room code: {}", &room_code);
-
-    let key = "ROOMCODE";
-    env::set_var(key, &room_code);
-    assert_eq!(env::var(key), Ok(room_code));
-
-    let key = "ROOMID";
-    env::set_var(key, &room_id);
-    assert_eq!(env::var(key), Ok(room_id));
+    let key = "ROOMTOKEN";
+    env::set_var(key, &room_token);
+    assert_eq!(env::var(key), Ok(room_token));
 }
 
 pub async fn create_new_room() -> String {
@@ -29,8 +22,8 @@ pub async fn create_new_room() -> String {
     response
 }
 
-pub async fn join_room(join_code: &str) -> String {
-    let endpoint = "/rooms/code/".to_owned() + join_code;
+pub async fn join_room(token: &str) -> String {
+    let endpoint = "/rooms/token/".to_owned() + token;
     let response_room = get_request(endpoint.as_str(), empty_headers()).await.map_err(|e|e.to_string()).unwrap();
     let joined_room: Room = serde_json::from_str(response_room.as_str()).expect("JSON was not well-formatted");
     cache_room(joined_room);

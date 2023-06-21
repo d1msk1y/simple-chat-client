@@ -3,23 +3,17 @@ const { invoke } = window.__TAURI__.tauri;
 let greetMsgEl;
 let messageInputEl;
 let roomCodeText;
-let roomIdText;
 
 let username;
-let roomId;
-let roomCode;
+let roomToken;
 
 const getLastMessage = messageGetter("get_message_by_id", {id: "0"});
 
 async function displayRoomCredentials() {
-  roomId = await invoke("get_env_var", {name: "ROOMID"});
-  roomCode = await invoke("get_env_var", {name: "ROOMCODE"});
+  roomToken = await invoke("get_env_var", {name: "ROOMTOKEN"});
+  roomCodeText = document.getElementById("room-token");
 
-  roomCodeText = document.getElementById("join-code-text");
-  roomIdText = document.getElementById("room-id-text");
-
-  roomCodeText.textContent = "Join Code : " + roomCode;
-  roomIdText.textContent = "Room ID: " + roomId;
+  roomCodeText.textContent = "Room Token : " + roomToken;
 }
 
 window.onload = async function (){

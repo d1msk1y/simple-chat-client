@@ -17,11 +17,11 @@ pub fn empty_headers() -> Option<HeaderMap> {
 
 pub fn security_headers() -> Option<HeaderMap> {
     let token = get_env_var("CHATTOKEN".to_string());
-    let room_id = get_env_var("ROOMID".to_string());
+    let room_token = get_env_var("ROOMTOKEN".to_string());
 
     let mut headers = HeaderMap::new();
     headers.insert("Token", HeaderValue::from_str(token.as_str()).unwrap());
-    headers.insert("RoomID", HeaderValue::from_str(room_id.as_str()).unwrap());
+    headers.insert("RoomToken", HeaderValue::from_str(room_token.as_str()).unwrap());
     Option::from(headers)
 }
 

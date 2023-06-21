@@ -32,7 +32,7 @@ async fn send_message(message:&str) -> Result<(), String> {
         username: nickname,
         time: chrono::offset::Local::now().to_string(),
         message: message.to_string(),
-        roomId: get_env_var("ROOMID".to_string())
+        room_token: get_env_var("ROOMTOKEN".to_string())
     };
 
     let stringified_json = serde_json::to_string(&m).unwrap();
@@ -94,7 +94,7 @@ async fn post_new_room() -> String {
 }
 
 #[tauri::command]
-async fn join_room_by_code(join_code: String) -> String { join_room(join_code.as_str()).await }
+async fn join_room_by_token(token: String) -> String { join_room(token.as_str()).await }
 
 #[tokio::main]
 async fn main() {
@@ -115,7 +115,7 @@ async fn main() {
             auth,
             get_env_var,
             post_new_room,
-            join_room_by_code
+            join_room_by_token
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
