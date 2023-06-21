@@ -6,7 +6,7 @@ pub struct MessageInfo {
     pub username: String,
     pub time: String,
     pub message: String,
-    pub roomId: String
+    pub room_token: String
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -21,11 +21,10 @@ pub struct User {
     pub id: String,
     pub username: String,
     pub jwt: String,
-    pub room_id: String,
+    pub room_token: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Room {
-    pub id: String,
-    pub code: String,
+    pub token: String,
 }

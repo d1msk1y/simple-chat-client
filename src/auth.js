@@ -1,9 +1,8 @@
 const { invoke } = window.__TAURI__.tauri;
 
 let loginInputEl;
-let roomCodeInputEl;
-let roomCode;
-let roomId;
+let roomTokenInputEl;
+let roomToken;
 
 async function auth() {
   return await invoke("auth", {username: loginInputEl.value})
@@ -11,7 +10,7 @@ async function auth() {
 
 async function joinRoom() {
   let result = await auth();
-  await invoke("get_message_by_id", { join_code: roomCodeInputEl.value });
+  await invoke("join_room_by_token", { token: roomTokenInputEl.value });
   if (result === true){
     window.location.href = "index.html";
 
@@ -21,14 +20,14 @@ async function joinRoom() {
 async function newRoom() {
   let roomJSON = await invoke ("post_new_room");
   let parsedRoom = JSON.parse(roomJSON);
-  roomCode = parsedRoom.code;
+  roomToken = parsedRoom.code;
   roomId = parsedRoom.id;
   await auth();
 }
 
 window.addEventListener("DOMContentLoaded", () => {
   loginInputEl = document.querySelector("#login-input");
-  roomCodeInputEl = document.querySelector('#room-code-input')
+  roomTokenInputEl = document.querySelector('#room-code-input')
   document.querySelector("#create-room-button")
       .addEventListener("click", () => newRoom());
 
