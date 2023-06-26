@@ -37,14 +37,13 @@
 
 
 .message-right {
-	display: flex;
-	justify-content: right;
-	
+	display: block;
+    margin-left: auto;
 }
 
 .message-left {
-	display: flex;
-	justify-content: left;
+  display: block;
+  margin-right: auto;
 }
 
 .emoji-drawer {
@@ -181,11 +180,12 @@ button {
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
+  z-index: 10;
 }
 
 .bottom-bar {
   background-color: #f1f1f1;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
   padding: 5px;
   display: flex;
   flex-direction: column;
