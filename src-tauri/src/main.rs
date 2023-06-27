@@ -9,11 +9,13 @@ use std::collections::HashMap;
 use reqwest::{Error};
 use serde::{Deserialize, Serialize};
 use chrono;
-use tungstenite::{connect, Message};
+use tungstenite::{connect, Message, WebSocket};
 use std::env;
+use std::net::TcpStream;
 use std::ptr::null;
 use std::thread;
 use serde::de::Unexpected::Option;
+use tungstenite::stream::MaybeTlsStream;
 use models::{MessageInfo, MessagePage};
 use http_client::{get_request, post_json};
 use crate::http_client::empty_headers;
@@ -43,13 +45,16 @@ async fn send_message(message:&str) -> Result<(), String> {
 async fn ws_handshake() {
     let (mut socket, _) = connect("ws://localhost:8080/ws").expect("Failed to connect");
     loop {
-        let message = socket.read_message().expect("Failed to receive message");
-        if let Message::Text(json_message) = &message {
+        expect_message(&mut socket);
+    }
+}
 
-            let message: MessageInfo = serde_json::from_str(&json_message).unwrap();
-            let message_formatted = serde_json::to_string_pretty(&message).unwrap();
-            println!("Received message: {}", message_formatted);
-        }
+fn expect_message(socket: &mut WebSocket<MaybeTlsStream<TcpStream>>) {
+    let message = socket.read_message().expect("Failed to receive message");
+    if let Message::Text(json_message) = &message {
+        let message: MessageInfo = serde_json::from_str(&json_message).unwrap();
+        let message_formatted = serde_json::to_string_pretty(&message).unwrap();
+        println!("Received message: {}", message_formatted);
     }
 }
 
