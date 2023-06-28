@@ -19,7 +19,7 @@ use tungstenite::stream::MaybeTlsStream;
 use models::{MessageInfo, MessagePage};
 use http_client::{get_request, post_json};
 use crate::http_client::empty_headers;
-use crate::multi_room::{create_new_room, join_room};
+use crate::multi_room::{create_new_room, get_room_users, join_room};
 
 #[tauri::command]
 async fn send_message(message:&str) -> Result<(), String> {
@@ -100,6 +100,11 @@ async fn post_new_room() -> String {
 
 #[tauri::command]
 async fn join_room_by_token(token: String) -> String { join_room(token.as_str()).await }
+
+#[tauri::command]
+async fn get_users_in_room(room_token: &str) -> String {
+    get_room_users(room_token).await
+}
 
 #[tokio::main]
 async fn main() {

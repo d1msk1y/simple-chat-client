@@ -272,7 +272,7 @@ dependencies = [
  "js-sys",
  "num-integer",
  "num-traits",
- "time 0.2.23",
+ "time 0.1.45",
  "wasm-bindgen",
  "winapi",
 ]
