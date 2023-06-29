@@ -22,7 +22,7 @@ pub async fn create_new_room() -> String {
     response
 }
 
-pub async fn join_room(token: &str) -> String {
+pub async fn join_room(token: &str) {
     let endpoint = "/rooms/token/".to_owned() + token;
     let response_room = get_request(endpoint.as_str(), empty_headers()).await.map_err(|e|e.to_string()).unwrap();
     let joined_room: Room = serde_json::from_str(response_room.as_str()).expect("JSON was not well-formatted");
@@ -30,10 +30,9 @@ pub async fn join_room(token: &str) -> String {
 
     let mut headers = HeaderMap::new();
     let username = get_env_var("CHATNICKNAME".to_string());
+    println!("post_request: {}", endpoint);
     headers.insert("Username", username.to_string().parse().unwrap());
-    post_request("/rooms/join", Option::from(headers));
-
-    response_room
+    post_request("/rooms/join", Option::from(headers)).await.unwrap();
 }
 
 pub async fn get_room_users(room_token: &str) -> String {

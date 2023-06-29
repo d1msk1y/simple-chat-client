@@ -99,7 +99,7 @@ async fn post_new_room() -> String {
 }
 
 #[tauri::command]
-async fn join_room_by_token(token: String) -> String { join_room(token.as_str()).await }
+async fn join_room_by_token(token: String) { join_room(token.as_str()).await }
 
 #[tauri::command]
 async fn get_users_in_room(room_token: &str) -> String {
