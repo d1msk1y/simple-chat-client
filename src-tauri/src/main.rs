@@ -34,7 +34,7 @@ async fn send_message(message:&str) -> Result<(), String> {
         username: nickname,
         time: chrono::offset::Local::now().to_string(),
         message: message.to_string(),
-        room_token: get_env_var("ROOMTOKEN".to_string())
+        room_token: get_env_var("ROOMTOKEN")
     };
 
     let stringified_json = serde_json::to_string(&m).unwrap();
@@ -85,7 +85,7 @@ async fn auth(username: &str) -> Result<bool, bool> {
 }
 
 #[tauri::command]
-fn get_env_var(name: String) -> String {
+fn get_env_var(name: &str) -> String {
     env::var(&name)
         .unwrap_or_else(|err| {
             println!("Failed to retrieve {}: {}", &name, &err);
@@ -99,11 +99,11 @@ async fn post_new_room() -> String {
 }
 
 #[tauri::command]
-async fn join_room_by_token(token: String) -> String { join_room(token.as_str()).await }
+async fn join_room_by_token(token: String) { join_room(token.as_str()).await }
 
 #[tauri::command]
-async fn get_users_in_room(room_token: &str) -> String {
-    get_room_users(room_token).await
+async fn get_users_in_room() -> String {
+    get_room_users(get_env_var("ROOMTOKEN").as_str()).await
 }
 
 #[tokio::main]

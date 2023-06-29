@@ -16,8 +16,8 @@ pub fn empty_headers() -> Option<HeaderMap> {
 }
 
 pub fn security_headers() -> Option<HeaderMap> {
-    let token = get_env_var("CHATTOKEN".to_string());
-    let room_token = get_env_var("ROOMTOKEN".to_string());
+    let token = get_env_var("CHATTOKEN");
+    let room_token = get_env_var("ROOMTOKEN");
 
     let mut headers = HeaderMap::new();
     headers.insert("Token", HeaderValue::from_str(token.as_str()).unwrap());
