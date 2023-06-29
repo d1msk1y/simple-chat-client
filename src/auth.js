@@ -13,7 +13,6 @@ async function joinRoom() {
   await invoke("join_room_by_token", { token: roomTokenInputEl.value });
   if (result === true){
     window.location.href = "index.html";
-
   }
 }
 

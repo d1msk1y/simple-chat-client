@@ -19,10 +19,16 @@ async function displayRoomCredentials() {
 window.onload = async function (){
   username = await invoke ("get_env_var", {name: "CHATNICKNAME"})
   await displayRoomCredentials();
+  await displayMembers();
 }
 
 function copyToClipboard(textElement) {
   navigator.clipboard.writeText(textElement.textContent);
+}
+
+async function displayMembers() {
+  let users = await invoke("get_users_in_room");
+  document.getElementById("members-text").textContent = "Members: " + JSON.parse(users).size;
 }
 
 let messagePageIndex = 0;

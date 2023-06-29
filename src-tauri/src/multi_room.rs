@@ -29,7 +29,7 @@ pub async fn join_room(token: &str) {
     cache_room(joined_room);
 
     let mut headers = HeaderMap::new();
-    let username = get_env_var("CHATNICKNAME".to_string());
+    let username = get_env_var("CHATNICKNAME");
     println!("post_request: {}", endpoint);
     headers.insert("Username", username.to_string().parse().unwrap());
     post_request("/rooms/join", Option::from(headers)).await.unwrap();
