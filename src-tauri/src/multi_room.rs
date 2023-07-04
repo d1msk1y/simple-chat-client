@@ -1,6 +1,8 @@
 use std::env;
+use std::ptr::null;
 use reqwest::Error;
 use tauri::http::header::{HeaderMap, HeaderValue};
+use tokio::join;
 use crate::get_env_var;
 use crate::http_client::{get_request, SERVER_ADDRESS, empty_headers, post_json, post_request};
 use crate::models::{Room, User};

@@ -43,7 +43,7 @@ async fn send_message(message:&str) -> Result<(), String> {
 
 #[tauri::command]
 async fn ws_handshake() {
-    let (mut socket, _) = connect("ws://localhost:8080/ws").expect("Failed to connect");
+    let (mut socket, _) = connect("ws://localhost:8080/ws").expect("Couldn't establish websocket connection with the server");
     loop {
         expect_message(&mut socket);
     }
