@@ -64,7 +64,7 @@ async function printMessage(message){
   let messageBox = createMessageBox(message);
   let messagePanel = document.getElementById("message-panel");
   let messageId = parseInt(message.id, 10);
-  if (messageId >= lastMessageId){
+  if (messageId > lastMessageId){
     lastMessageId = messageId;
     console.log(message);
     messagePanel.append(messageBox);
@@ -114,7 +114,7 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 window.onwheel = async e => {
-  if (e.deltaY < 0 && window.scrollY == 0) {
+  if (e.deltaY < 0 && window.scrollY < 0.2) {
     let indexString = (messagePageIndex + 1).toString()
     await PrintMessagePage(indexString);
   }
