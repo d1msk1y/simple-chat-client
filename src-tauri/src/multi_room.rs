@@ -38,6 +38,6 @@ pub async fn join_room(token: &str) {
 }
 
 pub async fn get_room_users(room_token: &str) -> String {
-    let endpoint = "rooms/users/".to_owned() + room_token;
-    get_request(endpoint.as_str(), empty_headers()).await.unwrap()
+    let endpoint = "/rooms/users/".to_owned() + room_token;
+    get_request(endpoint.as_str(), empty_headers()).await.map_err(|e|e.to_string()).unwrap()
 }
