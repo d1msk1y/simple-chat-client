@@ -125,7 +125,8 @@ async fn main() {
             auth,
             get_env_var,
             post_new_room,
-            join_room_by_token
+            join_room_by_token,
+            get_users_in_room
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

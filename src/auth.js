@@ -22,6 +22,7 @@ async function newRoom() {
   roomToken = parsedRoom.code;
   roomId = parsedRoom.id;
   await auth();
+  window.location.href = "index.html";
 }
 
 window.addEventListener("DOMContentLoaded", () => {

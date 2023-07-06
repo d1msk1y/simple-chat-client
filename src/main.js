@@ -27,8 +27,12 @@ function copyToClipboard(textElement) {
 }
 
 async function displayMembers() {
+  console.log("Displaying members")
   let users = await invoke("get_users_in_room");
-  document.getElementById("members-text").textContent = "Members: " + JSON.parse(users).size;
+  console.log(users)
+  let userAmount = JSON.parse(users).size;
+  console.log(userAmount)
+  document.getElementById("members-text").textContent = "Members: " + userAmount;
 }
 
 let messagePageIndex = 0;
