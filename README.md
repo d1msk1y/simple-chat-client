@@ -6,7 +6,7 @@ Simple-Chat-Client is a server side chat application built on Tauri framework, p
 
 ## API
 
-Client uses RESTful HTTP endpoints exposed on the [dedicated HTTP server](https://github.com/d1msk1y/sipmle-go-chat-server) written in go.
+Client uses RESTful HTTP endpoints exposed on the [dedicated HTTP server](https://github.com/d1msk1y/simple-go-chat-server) written in go.
 
 Each HTTP request has to possess so-called `security_headers`, they are nothing but some generic identifiers actually:
 ```rust
